@@ -1,5 +1,10 @@
 <?php
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
+$host = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$database = substr($url["path"], 1);
 return [
 
     /*
@@ -12,8 +17,8 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
-
-    'default' => env('DB_CONNECTION', 'mysql'),
+    
+    'default' => env('DB_CONNECTION', 'prod_heroku_db'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +37,16 @@ return [
     */
 
     'connections' => [
-
+        'prod_heroku_db' => array(
+            'driver' => 'mysql',
+            'host' => $host,
+            'database' => $database,
+            'username' => $username,
+            'password' => $password,
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+        ),
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
