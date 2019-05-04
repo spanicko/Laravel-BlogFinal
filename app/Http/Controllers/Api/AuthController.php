@@ -7,24 +7,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+require_once('./vendor/autoload.php');
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class AuthController extends Controller
 {
     public function getAccessToken(Request $request)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::WARNING));
+
+       
+        
         $this->validate($request, [
             'email'    => 'required|email',
             'password' => 'required'
         ]);
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $log->addWarning('correct credentials');
             return Auth::user();
         }
-
+        $log->addWarning('wrong credentials');
         return response()->json([
             'error' => true,
             'message' => 'Wrong credentials!'
         ])->setStatusCode(401);
+        
     }
 
     public function passwordResetRequest(Request $request)
