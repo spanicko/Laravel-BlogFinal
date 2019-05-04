@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function getAccessToken(Request $request)
     {
         $log = new Logger('authentication logger');
-        $log->pushHandler(new StreamHandler('php://stderr', Logger::WARNING));
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
 
        
         
@@ -26,10 +26,10 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $log->addWarning('correct credentials');
+            $log->addNotice('correct credentials');
             return Auth::user();
         }
-        $log->addWarning('wrong credentials');
+        $log->addNotice('wrong credentials');
         return response()->json([
             'error' => true,
             'message' => 'Wrong credentials!'
