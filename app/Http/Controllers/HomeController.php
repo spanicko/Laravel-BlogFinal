@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+require_once('./vendor/autoload.php');
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class HomeController extends Controller
 {
@@ -25,7 +28,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('Home Page');
+        $log->addNotice('Going to home page');
         
         $posts      = Post::count();
         $comments   = Comment::count();
