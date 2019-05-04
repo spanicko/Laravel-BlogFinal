@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class BlogController extends Controller
 {
     public function index(Request $request)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        $log->addNotice('showing $request varible: '.$request);
+        
         $posts = Post::when($request->search, function($query) use($request) {
                         $search = $request->search;
 
