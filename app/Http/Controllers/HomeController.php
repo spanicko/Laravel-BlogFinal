@@ -25,6 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        error_log('Home Page');
+        
         $posts      = Post::count();
         $comments   = Comment::count();
 
