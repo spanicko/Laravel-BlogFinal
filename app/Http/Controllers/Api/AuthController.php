@@ -17,7 +17,7 @@ class AuthController extends Controller
     {
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
-
+        error_log('this is getAccessToken');
        
         
         $this->validate($request, [
