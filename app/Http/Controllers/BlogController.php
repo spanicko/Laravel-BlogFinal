@@ -29,6 +29,11 @@ class BlogController extends Controller
 
     public function post(Post $post)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('TESTING');
+        $log->addNotice('showing $post varible: '.$post);
+        
         $post = $post->load(['comments.user', 'user']);
 
         return view('frontend.post', compact('post'));
