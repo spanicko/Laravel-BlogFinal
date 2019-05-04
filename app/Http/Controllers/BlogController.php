@@ -13,6 +13,7 @@ class BlogController extends Controller
     {
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('TESTING');
         $log->addNotice('showing $request varible: '.$request);
         
         $posts = Post::when($request->search, function($query) use($request) {
