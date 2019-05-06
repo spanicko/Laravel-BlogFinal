@@ -5,11 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
+         $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('return post search');
+        $log->addNotice('return post search: '.$request);
+        
         return Post::when($request->title, function($query) use ($request) {
             return $query->where('title', 'like', "%{$request->title}%");
         })
@@ -36,6 +43,11 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+         $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('show post');
+        $log->addNotice('show post: '.$request);
+        
         $post = $post->load(['comments.user', 'user']);
 
         return $post;

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class LoginController extends Controller
 {
@@ -34,6 +36,11 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('construct');
+        $log->addNotice('this is construct');
+        
         $this->middleware('guest', ['except' => 'logout']);
     }
 }

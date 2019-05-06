@@ -6,6 +6,8 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class PostController extends Controller
 {
@@ -28,6 +30,11 @@ class PostController extends Controller
      */
     public function create()
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('create');
+        $log->addNotice('this is create');
+        
         return view('admin.posts.create');
     }
 
@@ -39,6 +46,11 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('store');
+        $log->addNotice('this is store'.$request);
+        
         $post = Post::create([
             'title'       => $request->title,
             'body'        => $request->body
@@ -57,6 +69,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('show');
+        $log->addNotice('this is show');
+        
         $post = $post->load(['user', 'comments']);
 
         return view('admin.posts.show', compact('post'));
@@ -70,6 +87,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('edit');
+        $log->addNotice('this is edit');
+        
         if($post->user_id != auth()->user()->id && auth()->user()->is_admin == false) {
             flash()->overlay("You can't edit other peoples post.");
             return redirect('/admin/posts');
@@ -87,6 +109,11 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('update');
+        $log->addNotice('this is update');
+        
         $post->update([
             'title'       => $request->title,
             'body'        => $request->body
@@ -105,6 +132,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('destory');
+        $log->addNotice('this is destory');
+        
         if($post->user_id != auth()->user()->id && auth()->user()->is_admin == false) {
             flash()->overlay("You can't delete other peoples post.");
             return redirect('/admin/posts');
@@ -118,6 +150,11 @@ class PostController extends Controller
 
     public function publish(Post $post)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('publish');
+        $log->addNotice('this is publish');
+        
         $post->is_published = !$post->is_published;
         $post->save();
         flash()->overlay('Post changed successfully.');

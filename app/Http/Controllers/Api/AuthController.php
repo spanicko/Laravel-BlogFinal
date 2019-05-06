@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-require_once('./vendor/autoload.php');
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -17,7 +16,8 @@ class AuthController extends Controller
     {
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
-        error_log('this is getAccessToken');
+        error_log('TESTING');
+        $log->addNotice('this is getAccessToken: '.$request);
        
         
         $this->validate($request, [
@@ -39,6 +39,11 @@ class AuthController extends Controller
 
     public function passwordResetRequest(Request $request)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('passwordRestRequest');
+        $log->addNotice('this is passwordResetRequest: '.$request);
+        
         $this->validate($request, [
             'email' => 'required|email|exists:users,email',
         ]);
@@ -62,6 +67,11 @@ class AuthController extends Controller
 
     public function changePassword(Request $request)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('changePassword');
+        $log->addNotice('this is changePassword: '.$request);
+        
         $this->validate($request, [
             'email'     => 'required|email|exists:users',
             'reset_key' => 'required',

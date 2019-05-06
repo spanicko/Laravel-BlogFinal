@@ -6,6 +6,8 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class RegisterController extends Controller
 {
@@ -47,6 +49,11 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('validate user');
+        $log->addNotice('validate user');
+        
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
@@ -62,6 +69,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('create user');
+        $log->addNotice('creating user');
+        
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

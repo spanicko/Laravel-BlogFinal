@@ -41,6 +41,11 @@ class BlogController extends Controller
 
     public function comment(Request $request, Post $post)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('comment');
+        $log->addNotice('showing $post varible: '.$post);
+        
         $this->validate($request, ['body' => 'required']);
 
         $post->comments()->create([

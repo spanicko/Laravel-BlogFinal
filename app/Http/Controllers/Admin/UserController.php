@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class UserController extends Controller
 {
@@ -28,6 +30,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $log = new Logger('authentication logger');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+        error_log('destroy');
+        $log->addNotice('this is destory');
+        
         if(auth()->user() == $user) {
             flash()->overlay("You can't delete yourself.");
 
