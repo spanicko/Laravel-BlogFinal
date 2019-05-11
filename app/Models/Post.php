@@ -15,6 +15,11 @@ class Post extends Model
         'is_published'
     ];
 
+    /**
+     * Constructs the posts.
+     *
+     * @return App\Models\Post
+     */
     protected static function boot()
     {
         parent::boot();
@@ -30,26 +35,51 @@ class Post extends Model
         });
     }
 
+    /**
+     * Returns user model.
+     *
+     * @return App\User
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Returns comment model.
+     *
+     * @return App\Models\Commment
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * Returning all published posts.
+     *
+     * @return App\Models\Post
+     */
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
     }
 
+    /**
+     * Returns all the drafted posts.
+     *
+     * @return App\Models\Post
+     */
     public function scopeDrafted($query)
     {
         return $query->where('is_published', false);
     }
 
+    /**
+     * Returns string.
+     *
+     * @return App\Models\Post
+     */
     public function getPublishedAttribute()
     {
         return ($this->is_published) ? 'Yes' : 'No';

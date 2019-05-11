@@ -8,6 +8,12 @@ use App\Http\Controllers\Controller;
 
 class ListingController extends Controller
 {
+    
+    /**
+     * Returns users.
+     * 
+     * @return \App\User
+     */
     public function users()
     {
         $users = User::paginate(10);

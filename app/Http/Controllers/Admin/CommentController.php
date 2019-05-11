@@ -20,7 +20,7 @@ class CommentController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('index');
-        $log->addNotice('this is index');
+        $log->addNotice('CommentController::index displaying list of comments');
         
         $comments = Comment::with('post')->paginate(10);
 
@@ -30,7 +30,7 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Comment $comment)
@@ -38,7 +38,7 @@ class CommentController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('destory');
-        $log->addNotice('this is destroy');
+        $log->addNotice('CommentController::destroy this deletes the comments');
         
         if($comment->user_id != auth()->user()->id && auth()->user()->is_admin == false) {
             flash()->overlay("You can't delete other peoples comment.");

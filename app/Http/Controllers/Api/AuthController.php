@@ -12,6 +12,13 @@ use Monolog\Handler\StreamHandler;
 
 class AuthController extends Controller
 {
+    
+    /**
+     * Request access token.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function getAccessToken(Request $request)
     {
         $log = new Logger('authentication logger');
@@ -37,6 +44,13 @@ class AuthController extends Controller
         
     }
 
+    
+    /**
+     * Request password reset.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function passwordResetRequest(Request $request)
     {
         $log = new Logger('authentication logger');
@@ -65,6 +79,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Request change password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function changePassword(Request $request)
     {
         $log = new Logger('authentication logger');

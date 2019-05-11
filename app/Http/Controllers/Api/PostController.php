@@ -10,6 +10,13 @@ use Monolog\Handler\StreamHandler;
 
 class PostController extends Controller
 {
+    
+    /**
+     * Returning a list of resources from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return App\Models\Post
+     */
     public function index(Request $request)
     {
          $log = new Logger('authentication logger');
@@ -41,8 +48,16 @@ class PostController extends Controller
         ->paginate($request->get('limit', 10));
     }
 
+    
+    /**
+     * Showing the posts.
+     *
+     * @param  App\Models\Post $post
+     * @return App\Models\Post
+     */
     public function show(Post $post)
     {
+        
          $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('show post');

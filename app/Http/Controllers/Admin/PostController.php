@@ -33,7 +33,7 @@ class PostController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('create');
-        $log->addNotice('this is create');
+        $log->addNotice('PostController::create');
         
         return view('admin.posts.create');
     }
@@ -49,7 +49,7 @@ class PostController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('store');
-        $log->addNotice('this is store'.$request);
+        $log->addNotice('PostController::store');
         
         $post = Post::create([
             'title'       => $request->title,
@@ -64,7 +64,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
@@ -72,7 +72,7 @@ class PostController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('show');
-        $log->addNotice('this is show');
+        $log->addNotice('PostController::show');
         
         $post = $post->load(['user', 'comments']);
 
@@ -82,7 +82,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
@@ -90,7 +90,7 @@ class PostController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('edit');
-        $log->addNotice('this is edit');
+        $log->addNotice('PostController::edit');
         
         if($post->user_id != auth()->user()->id && auth()->user()->is_admin == false) {
             flash()->overlay("You can't edit other peoples post.");
@@ -104,7 +104,7 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function update(PostRequest $request, Post $post)
@@ -112,7 +112,7 @@ class PostController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('update');
-        $log->addNotice('this is update');
+        $log->addNotice('PostController::update');
         
         $post->update([
             'title'       => $request->title,
@@ -127,7 +127,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
@@ -135,7 +135,7 @@ class PostController extends Controller
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('destory');
-        $log->addNotice('this is destory');
+        $log->addNotice('PostController::destroy');
         
         if($post->user_id != auth()->user()->id && auth()->user()->is_admin == false) {
             flash()->overlay("You can't delete other peoples post.");
@@ -148,12 +148,18 @@ class PostController extends Controller
         return redirect('/admin/posts');
     }
 
+    /**
+     * Publish the specified resource from storage.
+     *
+     * @param  App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
     public function publish(Post $post)
     {
         $log = new Logger('authentication logger');
         $log->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
         error_log('publish');
-        $log->addNotice('this is publish');
+        $log->addNotice('PostController::publish');
         
         $post->is_published = !$post->is_published;
         $post->save();

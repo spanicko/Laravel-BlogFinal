@@ -9,6 +9,13 @@ use Monolog\Handler\StreamHandler;
 
 class BlogController extends Controller
 {
+    
+    /**
+     * Displays the main blog page.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return App\Models\Post
+     */
     public function index(Request $request)
     {
         $log = new Logger('authentication logger');
@@ -27,6 +34,12 @@ class BlogController extends Controller
         return view('frontend.index', compact('posts'));
     }
 
+    /**
+     * Displaying a specific blog.
+     *
+     * @param  App\Models\Post $post
+     * @return App\Models\Post
+     */
     public function post(Post $post)
     {
         $log = new Logger('authentication logger');
@@ -39,6 +52,13 @@ class BlogController extends Controller
         return view('frontend.post', compact('post'));
     }
 
+    /**
+     * Creates the comment.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  App\Models\Post $post
+     * @return App\Models\Post
+     */
     public function comment(Request $request, Post $post)
     {
         $log = new Logger('authentication logger');
